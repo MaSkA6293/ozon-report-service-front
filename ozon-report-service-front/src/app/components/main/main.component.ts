@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { throwError } from 'rxjs';
+import { ReportService } from 'src/app/services/report.service';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-main',
@@ -10,15 +11,19 @@ import { throwError } from 'rxjs';
 export class MainComponent {
   [key: string]: any;
 
-  report: File | null = null;
+  realizationReport: File | null = null;
 
   fbo: File | null = null;
 
   fbs: File | null = null;
 
+  report: any;
+
+  reportDate: string | null = null;
+
   disabled = true;
 
-  constructor(private http: HttpClient) {}
+  constructor(private reportService: ReportService) {}
 
   onFileSelected(event: Event) {
     const target = event.target as HTMLInputElement;
@@ -32,28 +37,40 @@ export class MainComponent {
   }
 
   checkFiles() {
-    if (this.fbo && this.fbs && this.report) {
+    if (this.fbo && this.fbs && this.realizationReport && this.reportDate) {
       this.disabled = false;
     }
   }
 
   send() {
-    if (this.fbo && this.fbs && this.report) {
-      const formData = new FormData();
-      formData.append('fbs', this.fbs, this.fbs.name);
-      formData.append('fb0', this.fbo, this.fbo.name);
-      formData.append('report', this.report, this.report.name);
-
-      const upload$ = this.http.post('https://httpbin.org/post', formData);
-
-      //  this.status = 'uploading';
-
-      upload$.subscribe({
-        next: () => {},
-        error: (error: any) => {
-          return throwError(() => error);
-        },
-      });
+    if (this.fbo && this.fbs && this.realizationReport && this.reportDate) {
+      this.reportService
+        .getReport(this.fbs, this.fbo, this.realizationReport, this.reportDate)
+        .pipe()
+        .subscribe({
+          next: (file: any) => {
+            const wbout = XLSX.write(file, {
+              bookType: 'xlsx',
+              type: 'buffer',
+            });
+            const blob = new Blob([wbout], {
+              type: 'application/vnd.ms-excel',
+            });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `report-${this.reportDate}.xlsx`;
+            a.click();
+            a.remove();
+          },
+          error: (error: any) => {
+            return throwError(() => error);
+          },
+        });
     }
+  }
+
+  onSelectedDate(date: string) {
+    this.reportDate = date;
+    this.checkFiles();
   }
 }

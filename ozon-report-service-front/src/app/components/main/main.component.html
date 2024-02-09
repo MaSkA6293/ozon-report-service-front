@@ -68,7 +68,7 @@
       class="file-input"
       (change)="onFileSelected($event)"
       #fileUploadReport
-      name="report"
+      name="realizationReport"
     />
 
     <div class="file-upload">
@@ -79,7 +79,7 @@
       >
       <div class="file-upload__select-file">
         <span class="file-upload__file-name">
-          {{ report?.name || 'No file uploaded yet.' }}</span
+          {{ realizationReport?.name || 'No file uploaded yet.' }}</span
         >
         <button
           mat-mini-fab
@@ -93,6 +93,7 @@
       </div>
     </div>
   </div>
+  <app-datepicker (selectedDate)="onSelectedDate($event)"></app-datepicker>
 
   <button mat-raised-button class="send" (click)="send()" [disabled]="disabled">
     Send
