@@ -50,7 +50,14 @@
   }
 }
 .send {
+  display: flex;
+  position: relative;
   margin: 25px 0;
   width: 200px;
   height: 50px;
+
+  .spinner {
+    position: absolute;
+    top: -3px;
+  }
 }

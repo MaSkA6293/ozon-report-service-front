@@ -23,6 +23,8 @@ export class MainComponent {
 
   disabled = true;
 
+  status: 'pending' | 'ok' = 'ok';
+
   constructor(private reportService: ReportService) {}
 
   onFileSelected(event: Event) {
@@ -44,11 +46,15 @@ export class MainComponent {
 
   send() {
     if (this.fbo && this.fbs && this.realizationReport && this.reportDate) {
+      this.status = 'pending';
+      this.disabled = true;
       this.reportService
         .getReport(this.fbs, this.fbo, this.realizationReport, this.reportDate)
         .pipe()
         .subscribe({
           next: (file: any) => {
+            this.status = 'ok';
+            this.disabled = false;
             const wbout = XLSX.write(file, {
               bookType: 'xlsx',
               type: 'buffer',
@@ -63,6 +69,8 @@ export class MainComponent {
             a.remove();
           },
           error: (error: any) => {
+            this.status = 'ok';
+            this.disabled = false;
             return throwError(() => error);
           },
         });

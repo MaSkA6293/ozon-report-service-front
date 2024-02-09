@@ -96,6 +96,10 @@
   <app-datepicker (selectedDate)="onSelectedDate($event)"></app-datepicker>
 
   <button mat-raised-button class="send" (click)="send()" [disabled]="disabled">
-    Send
+    send<mat-spinner
+      *ngIf="status === 'pending'"
+      diameter="30"
+      class="spinner"
+    ></mat-spinner>
   </button>
 </div>
