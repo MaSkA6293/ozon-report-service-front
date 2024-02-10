@@ -17,9 +17,16 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ServerStatusComponent } from './components/server-status/server-status.component';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
-  declarations: [AppComponent, MainComponent, DatepickerComponent],
+  declarations: [
+    AppComponent,
+    MainComponent,
+    DatepickerComponent,
+    ServerStatusComponent,
+  ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -33,6 +40,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     FormsModule,
     ReactiveFormsModule,
     MatProgressSpinnerModule,
+    MatCardModule,
   ],
   providers: [provideAnimations()],
   bootstrap: [AppComponent],
