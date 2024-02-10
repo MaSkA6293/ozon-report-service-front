@@ -50,7 +50,6 @@ export class MainComponent {
       this.disabled = true;
       this.reportService
         .getReport(this.fbs, this.fbo, this.realizationReport, this.reportDate)
-        .pipe()
         .subscribe({
           next: (file: any) => {
             this.status = 'ok';

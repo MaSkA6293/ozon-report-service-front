@@ -53,6 +53,7 @@
     "@types/node": "^20.11.16",
     "@typescript-eslint/eslint-plugin": "5.48.2",
     "@typescript-eslint/parser": "5.48.2",
+    "autoprefixer": "^10.4.17",
     "eslint": "^8.33.0",
     "eslint-config-airbnb-typescript": "^17.0.0",
     "eslint-config-prettier": "^8.8.0",
@@ -66,7 +67,9 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.0.0",
     "lint-staged": "^13.2.3",
+    "postcss": "^8.4.35",
     "prettier": "^3.0.0",
+    "tailwindcss": "^3.4.1",
     "typescript": "~4.9.4"
   }
 }

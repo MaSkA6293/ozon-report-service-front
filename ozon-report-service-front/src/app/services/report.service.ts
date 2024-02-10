@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+
 @Injectable({
   providedIn: 'root',
 })
 export class ReportService {
-  url = 'https://ozon-report-service.onrender.com/report';
+  url = 'https://ozon-report-service.onrender.com';
 
-  localUrl = 'http://localhost:4000/report';
+  localUrl = 'http://localhost:4000';
 
   constructor(private http: HttpClient) {}
 
@@ -17,6 +18,10 @@ export class ReportService {
     formData.append('report', realizationReport);
     formData.append('reportDate', reportDate);
 
-    return this.http.post(this.url, formData);
+    return this.http.post(`${this.url}/report`, formData);
+  }
+
+  checkUpServer() {
+    return this.http.get(this.url, { responseType: 'text' });
   }
 }

@@ -19,6 +19,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ServerStatusComponent } from './components/server-status/server-status.component';
 import { MatCardModule } from '@angular/material/card';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { MatCardModule } from '@angular/material/card';
     ReactiveFormsModule,
     MatProgressSpinnerModule,
     MatCardModule,
+    MatSnackBarModule,
   ],
   providers: [provideAnimations()],
   bootstrap: [AppComponent],

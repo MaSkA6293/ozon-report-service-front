@@ -1,3 +1,5 @@
-<mat-card-content>
-  <mat-icon>fiber_manual_record</mat-icon>Server status</mat-card-content
+<mat-card-content class="flex justify-center items-center text-xl">
+  <mat-icon [ngClass]="{ 'text-red-600': !isAlive, 'text-green-500': isAlive }"
+    >fiber_manual_record</mat-icon
+  >Server is {{ isAlive ? 'on' : 'off' }}line</mat-card-content
 >
