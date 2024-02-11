@@ -20,6 +20,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ServerStatusComponent } from './components/server-status/server-status.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { SelectCountryComponent } from './components/select-country/select-country.component';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -27,6 +29,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MainComponent,
     DatepickerComponent,
     ServerStatusComponent,
+    SelectCountryComponent,
   ],
   imports: [
     BrowserModule,
@@ -43,6 +46,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatProgressSpinnerModule,
     MatCardModule,
     MatSnackBarModule,
+    MatSelectModule,
   ],
   providers: [provideAnimations()],
   bootstrap: [AppComponent],

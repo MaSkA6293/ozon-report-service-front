@@ -6,6 +6,7 @@ interface GetReport {
   fbo: File;
   realizationReport: File;
   reportDate: string;
+  countries: string;
 }
 
 @Injectable({
@@ -18,12 +19,13 @@ export class ReportService {
 
   constructor(private http: HttpClient) {}
 
-  getReport({ fbo, fbs, realizationReport, reportDate }: GetReport) {
+  getReport({ fbo, fbs, realizationReport, reportDate, countries }: GetReport) {
     const formData = new FormData();
     formData.append('fbs', fbs);
     formData.append('fbo', fbo);
     formData.append('report', realizationReport);
     formData.append('reportDate', reportDate);
+    formData.append('countries', countries);
     return this.http.post(`${this.url}/report`, formData);
   }
 

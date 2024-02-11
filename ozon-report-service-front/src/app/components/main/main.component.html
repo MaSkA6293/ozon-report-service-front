@@ -107,6 +107,10 @@
     [date]="this.reportForm.controls.reportDate"
     [disabled]="this.status === 'pending'"
   ></app-datepicker>
+  <app-select-country
+    [countries]="this.reportForm.controls.countries"
+    [countryList]="this.countryList"
+  ></app-select-country>
   <div class="flex relative">
     <button
       mat-raised-button

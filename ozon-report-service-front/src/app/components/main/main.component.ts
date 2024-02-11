@@ -22,11 +22,22 @@ interface ReportForm {
 export class MainComponent {
   status: 'pending' | 'ok' = 'ok';
 
+  countryList = ['Армения', 'Кыргызстан', 'Казахстан', 'Беларусь'];
+
   reportForm = this.formBuilder.group({
     fbo: [<null | File>null, [Validators.required]],
     fbs: [<null | File>null, [Validators.required]],
     realizationReport: [<null | File>null, [Validators.required]],
     reportDate: [moment().subtract(1, 'month'), [Validators.required]],
+    countries: [
+      [
+        this.countryList[0],
+        this.countryList[1],
+        this.countryList[2],
+        this.countryList[3],
+      ],
+      [Validators.required],
+    ],
   });
 
   constructor(
@@ -57,7 +68,8 @@ export class MainComponent {
       this.registerFormControl.fbo.value &&
       this.registerFormControl.fbs.value &&
       this.registerFormControl.realizationReport.value &&
-      this.registerFormControl.reportDate
+      this.registerFormControl.reportDate &&
+      this.registerFormControl.countries.value
     ) {
       this.status = 'pending';
       this.reportService
@@ -68,6 +80,7 @@ export class MainComponent {
           reportDate: moment(this.registerFormControl.reportDate.value).format(
             'MM/YYYY',
           ),
+          countries: JSON.stringify(this.registerFormControl.countries.value),
         })
         .subscribe({
           next: (file: any) => {

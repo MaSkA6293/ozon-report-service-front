@@ -1,0 +1,15 @@
+<mat-form-field class="w-80">
+  <mat-label>Countries</mat-label>
+  <mat-select multiple [formControl]="countries">
+    <mat-select-trigger>
+      {{ this.countries.value || '' }}
+      <span *ngIf="(this.countries.value?.length || 0) - 1">
+        +{{ (this.countries.value?.length || 0) - 1
+        }}{{ this.countries.value?.length === 2 ? 'other' : 'others' }}
+      </span>
+    </mat-select-trigger>
+    <mat-option [value]="country" nf *ngFor="let country of this.countryList">{{
+      country
+    }}</mat-option>
+  </mat-select>
+</mat-form-field>
