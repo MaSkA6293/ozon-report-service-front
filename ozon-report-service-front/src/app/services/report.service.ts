@@ -1,6 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
+interface GetReport {
+  fbs: File;
+  fbo: File;
+  realizationReport: File;
+  reportDate: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -11,13 +18,12 @@ export class ReportService {
 
   constructor(private http: HttpClient) {}
 
-  getReport(fbs: File, fbo: File, realizationReport: File, reportDate: string) {
+  getReport({ fbo, fbs, realizationReport, reportDate }: GetReport) {
     const formData = new FormData();
     formData.append('fbs', fbs);
     formData.append('fbo', fbo);
     formData.append('report', realizationReport);
     formData.append('reportDate', reportDate);
-
     return this.http.post(`${this.url}/report`, formData);
   }
 

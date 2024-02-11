@@ -1,10 +1,4 @@
-import {
-  Component,
-  Output,
-  ViewEncapsulation,
-  EventEmitter,
-  AfterViewInit,
-} from '@angular/core';
+import { Component, ViewEncapsulation, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { MatDatepicker } from '@angular/material/datepicker';
@@ -40,20 +34,10 @@ export const MY_FORMATS = {
   encapsulation: ViewEncapsulation.None,
 })
 // eslint-disable-next-line @angular-eslint/component-class-suffix
-export class DatepickerComponent implements AfterViewInit {
-  date: FormControl;
+export class DatepickerComponent {
+  @Input() date: FormControl = new FormControl();
 
-  @Output() selectedDate = new EventEmitter<string>();
-
-  constructor() {
-    const date = moment().subtract(1, 'month');
-    this.date = new FormControl(date);
-    this.selectedDate.emit(date.format('MM/YYYY'));
-  }
-
-  ngAfterViewInit() {
-    this.selectedDate.emit(this.date.value.format('MM/YYYY'));
-  }
+  @Input() disabled = false;
 
   setMonthAndYear(
     normalizedMonthAndYear: Moment,
@@ -63,7 +47,6 @@ export class DatepickerComponent implements AfterViewInit {
     ctrlValue.month(normalizedMonthAndYear.month());
     ctrlValue.year(normalizedMonthAndYear.year());
     this.date.setValue(ctrlValue);
-    this.selectedDate.emit(ctrlValue.format('MM/YYYY'));
     datepicker.close();
   }
 }

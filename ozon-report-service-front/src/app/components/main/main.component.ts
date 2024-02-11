@@ -1,31 +1,42 @@
 import { Component } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { throwError } from 'rxjs';
 import { ReportService } from 'src/app/services/report.service';
 import * as XLSX from 'xlsx';
+import * as _moment from 'moment';
+import { default as _rollupMoment } from 'moment';
+
+const moment = _rollupMoment || _moment;
+
+interface ReportForm {
+  fbo: [File | null];
+  fbs: [File | null];
+  realizationReport: [File | null];
+  date: Date;
+}
 
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
-  styleUrls: ['./main.component.scss'],
 })
 export class MainComponent {
-  [key: string]: any;
-
-  realizationReport: File | null = null;
-
-  fbo: File | null = null;
-
-  fbs: File | null = null;
-
-  report: any;
-
-  reportDate: string | null = null;
-
-  disabled = true;
-
   status: 'pending' | 'ok' = 'ok';
 
-  constructor(private reportService: ReportService) {}
+  reportForm = this.formBuilder.group({
+    fbo: [<null | File>null, [Validators.required]],
+    fbs: [<null | File>null, [Validators.required]],
+    realizationReport: [<null | File>null, [Validators.required]],
+    reportDate: [moment().subtract(1, 'month'), [Validators.required]],
+  });
+
+  constructor(
+    private reportService: ReportService,
+    private formBuilder: FormBuilder,
+  ) {}
+
+  get registerFormControl() {
+    return this.reportForm.controls;
+  }
 
   onFileSelected(event: Event) {
     const target = event.target as HTMLInputElement;
@@ -33,27 +44,34 @@ export class MainComponent {
     const file: File = (target.files as FileList)[0];
 
     if (file) {
-      this[target.name] = file;
-      this.checkFiles();
-    }
-  }
-
-  checkFiles() {
-    if (this.fbo && this.fbs && this.realizationReport && this.reportDate) {
-      this.disabled = false;
+      const name = target.name as keyof Partial<ReportForm>;
+      this.reportForm.patchValue({
+        [name]: file,
+      });
     }
   }
 
   send() {
-    if (this.fbo && this.fbs && this.realizationReport && this.reportDate) {
+    if (
+      this.reportForm.valid &&
+      this.registerFormControl.fbo.value &&
+      this.registerFormControl.fbs.value &&
+      this.registerFormControl.realizationReport.value &&
+      this.registerFormControl.reportDate
+    ) {
       this.status = 'pending';
-      this.disabled = true;
       this.reportService
-        .getReport(this.fbs, this.fbo, this.realizationReport, this.reportDate)
+        .getReport({
+          fbo: this.registerFormControl.fbo.value,
+          fbs: this.registerFormControl.fbs.value,
+          realizationReport: this.registerFormControl.realizationReport.value,
+          reportDate: moment(this.registerFormControl.reportDate.value).format(
+            'MM/YYYY',
+          ),
+        })
         .subscribe({
           next: (file: any) => {
             this.status = 'ok';
-            this.disabled = false;
             const wbout = XLSX.write(file, {
               bookType: 'xlsx',
               type: 'buffer',
@@ -63,21 +81,17 @@ export class MainComponent {
             });
             const a = document.createElement('a');
             a.href = URL.createObjectURL(blob);
-            a.download = `report-${this.reportDate}.xlsx`;
+            a.download = `report-${moment(
+              this.registerFormControl.reportDate.value,
+            ).format('DD.MM.YYYY__hh.mm')}.xlsx`;
             a.click();
             a.remove();
           },
           error: (error: any) => {
             this.status = 'ok';
-            this.disabled = false;
             return throwError(() => error);
           },
         });
     }
-  }
-
-  onSelectedDate(date: string) {
-    this.reportDate = date;
-    this.checkFiles();
   }
 }

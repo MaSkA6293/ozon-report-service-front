@@ -1,29 +1,32 @@
-<div class="container">
-  <app-server-status></app-server-status>
-  <div class="upload-file">
+<app-server-status></app-server-status>
+<form [formGroup]="reportForm" class="flex flex-col items-center">
+  <div class="flex w-80 justify-center py-2 bo border-b-2 border-b-slate-400">
     <input
       type="file"
       accept=".csv"
-      class="file-input"
+      class="hidden"
       (change)="onFileSelected($event)"
       #fileUploadFbo
       name="fbo"
     />
-
-    <div class="file-upload">
-      <label class="file-upload__title" for="upload-btn"
-        >Select <span class="file-upload__extension">FBO csv</span> file</label
+    <div class="flex w-full flex-col">
+      <label for="upload-btn-fbo"
+        >Select
+        <span class="font-medium text-base">FBO csv</span>
+        file</label
       >
-      <div class="file-upload__select-file">
-        <span class="file-upload__file-name">
-          {{ fbo?.name || 'No file uploaded yet.' }}</span
-        >
+      <div class="flex justify-between items-center">
+        <span class="text-xl max-w-52 overflow-hidden text-ellipsis">
+          {{
+            this.registerFormControl.fbo.value?.name || 'No file uploaded yet.'
+          }}
+        </span>
         <button
           mat-mini-fab
           color="primary"
-          class="upload-btn"
           (click)="fileUploadFbo.click()"
-          id="upload-btn"
+          id="upload-btn-fbo"
+          [disabled]="this.status === 'pending'"
         >
           <mat-icon>attach_file</mat-icon>
         </button>
@@ -31,30 +34,33 @@
     </div>
   </div>
 
-  <div class="upload-file">
+  <div class="flex w-80 justify-center py-2 bo border-b-2 border-b-slate-400">
     <input
       type="file"
       accept=".csv"
-      class="file-input"
+      class="hidden"
       (change)="onFileSelected($event)"
       #fileUploadFbs
       name="fbs"
     />
 
-    <div class="file-upload">
-      <label class="file-upload__title" for="upload-btn"
-        >Select <span class="file-upload__extension">FBS csv</span> file</label
+    <div class="flex w-full flex-col">
+      <label for="upload-btn-fbs"
+        >Select <span class="font-medium text-base">FBS csv</span> file</label
       >
-      <div class="file-upload__select-file">
-        <span class="file-upload__file-name">
-          {{ fbs?.name || 'No file uploaded yet.' }}</span
-        >
+      <div class="flex justify-between items-center">
+        <span class="text-xl max-w-52 overflow-hidden text-ellipsis">
+          {{
+            this.registerFormControl.fbs.value?.name || 'No file uploaded yet.'
+          }}
+        </span>
         <button
           mat-mini-fab
           color="primary"
           class="upload-btn"
           (click)="fileUploadFbs.click()"
-          id="upload-btn"
+          id="upload-btn-fbs"
+          [disabled]="this.status === 'pending'"
         >
           <mat-icon>attach_file</mat-icon>
         </button>
@@ -62,45 +68,58 @@
     </div>
   </div>
 
-  <div class="upload-file">
+  <div class="flex w-80 justify-center py-2 bo border-b-2 border-b-slate-400">
     <input
       type="file"
       accept=".xlsx"
-      class="file-input"
+      class="hidden"
       (change)="onFileSelected($event)"
       #fileUploadReport
       name="realizationReport"
     />
 
-    <div class="file-upload">
-      <label class="file-upload__title" for="upload-btn"
+    <div class="flex w-full flex-col">
+      <label for="upload-btn-realization-report"
         >Select
-        <span class="file-upload__extension">Realization report xlsx</span>
+        <span class="font-medium text-base">Realization report xlsx</span>
         file</label
       >
-      <div class="file-upload__select-file">
-        <span class="file-upload__file-name">
-          {{ realizationReport?.name || 'No file uploaded yet.' }}</span
+      <div class="flex justify-between items-center">
+        <span class="text-xl max-w-52 overflow-hidden text-ellipsis">
+          {{
+            this.registerFormControl.realizationReport.value?.name ||
+              'No file uploaded yet.'
+          }}</span
         >
         <button
           mat-mini-fab
           color="primary"
-          class="upload-btn"
           (click)="fileUploadReport.click()"
-          id="upload-btn"
+          id="upload-btn-realization-report"
+          [disabled]="this.status === 'pending'"
         >
           <mat-icon>attach_file</mat-icon>
         </button>
       </div>
     </div>
   </div>
-  <app-datepicker (selectedDate)="onSelectedDate($event)"></app-datepicker>
-
-  <button mat-raised-button class="send" (click)="send()" [disabled]="disabled">
-    send<mat-spinner
-      *ngIf="status === 'pending'"
+  <app-datepicker
+    [date]="this.reportForm.controls.reportDate"
+    [disabled]="this.status === 'pending'"
+  ></app-datepicker>
+  <div class="flex relative">
+    <button
+      mat-raised-button
+      type="submit"
+      class="flex my-6 w-80 h-12 uppercase"
+      (click)="send()"
+      [disabled]="!reportForm.valid || this.status === 'pending'"
+    >
+      send</button
+    ><mat-spinner
+      *ngIf="this.status === 'pending'"
       diameter="30"
-      class="spinner"
+      class="flex absolute top-8 left-36"
     ></mat-spinner>
-  </button>
-</div>
+  </div>
+</form>
