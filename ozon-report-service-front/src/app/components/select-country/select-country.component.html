@@ -2,7 +2,7 @@
   <mat-label>Countries</mat-label>
   <mat-select multiple [formControl]="countries">
     <mat-select-trigger>
-      {{ this.countries.value || '' }}
+      {{ this.countries.value[0] || '' }}
       <span *ngIf="(this.countries.value?.length || 0) - 1">
         +{{ (this.countries.value?.length || 0) - 1
         }}{{ this.countries.value?.length === 2 ? 'other' : 'others' }}
