@@ -20,8 +20,6 @@ interface ReportForm {
   templateUrl: './main.component.html',
 })
 export class MainComponent {
-  status: 'pending' | 'ok' = 'ok';
-
   countryList = ['Армения', 'Кыргызстан', 'Казахстан', 'Беларусь'];
 
   reportForm = this.formBuilder.group({
@@ -71,7 +69,7 @@ export class MainComponent {
       this.registerFormControl.reportDate &&
       this.registerFormControl.countries.value
     ) {
-      this.status = 'pending';
+      this.reportForm.disable();
       this.reportService
         .getReport({
           fbo: this.registerFormControl.fbo.value,
@@ -84,7 +82,7 @@ export class MainComponent {
         })
         .subscribe({
           next: (file: any) => {
-            this.status = 'ok';
+            this.reportForm.enable();
             const wbout = XLSX.write(file, {
               bookType: 'xlsx',
               type: 'buffer',
@@ -101,7 +99,7 @@ export class MainComponent {
             a.remove();
           },
           error: (error: any) => {
-            this.status = 'ok';
+            this.reportForm.enable();
             return throwError(() => error);
           },
         });

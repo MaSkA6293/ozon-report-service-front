@@ -26,7 +26,7 @@
           color="primary"
           (click)="fileUploadFbo.click()"
           id="upload-btn-fbo"
-          [disabled]="this.status === 'pending'"
+          [disabled]="this.reportForm.disabled"
         >
           <mat-icon>attach_file</mat-icon>
         </button>
@@ -60,7 +60,7 @@
           class="upload-btn"
           (click)="fileUploadFbs.click()"
           id="upload-btn-fbs"
-          [disabled]="this.status === 'pending'"
+          [disabled]="this.reportForm.disabled"
         >
           <mat-icon>attach_file</mat-icon>
         </button>
@@ -96,17 +96,14 @@
           color="primary"
           (click)="fileUploadReport.click()"
           id="upload-btn-realization-report"
-          [disabled]="this.status === 'pending'"
+          [disabled]="this.reportForm.disabled"
         >
           <mat-icon>attach_file</mat-icon>
         </button>
       </div>
     </div>
   </div>
-  <app-datepicker
-    [date]="this.reportForm.controls.reportDate"
-    [disabled]="this.status === 'pending'"
-  ></app-datepicker>
+  <app-datepicker [date]="this.reportForm.controls.reportDate"></app-datepicker>
   <app-select-country
     [countries]="this.reportForm.controls.countries"
     [countryList]="this.countryList"
@@ -117,11 +114,11 @@
       type="submit"
       class="flex my-6 w-80 h-12 uppercase"
       (click)="send()"
-      [disabled]="!reportForm.valid || this.status === 'pending'"
+      [disabled]="!reportForm.valid || reportForm.disabled"
     >
       send</button
     ><mat-spinner
-      *ngIf="this.status === 'pending'"
+      *ngIf="reportForm.disabled"
       diameter="30"
       class="flex absolute top-8 left-36"
     ></mat-spinner>

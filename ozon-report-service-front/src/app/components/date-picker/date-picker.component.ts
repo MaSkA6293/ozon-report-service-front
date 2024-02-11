@@ -37,8 +37,6 @@ export const MY_FORMATS = {
 export class DatepickerComponent {
   @Input() date: FormControl = new FormControl();
 
-  @Input() disabled = false;
-
   setMonthAndYear(
     normalizedMonthAndYear: Moment,
     datepicker: MatDatepicker<Moment>,
